@@ -185,6 +185,7 @@ plate_info=[1,4358,0.112637363,328.0656312;
 181,1541,20.38736264,75.40986281;
 182,1518,20.5,72.67584173;];
 
+
 T_plate=plate_info(:,4);
 X_plate=plate_info(:,3)+0.5;
 DI_plate=plate_info(:,2);
@@ -197,6 +198,8 @@ T_Al=T_plate(98:1:156);
 X_Al=X_plate(98:1:156);
 T_glass=T_plate(161:1:178);
 X_glass=X_plate(161:1:178);
+
+
 
 F_steel = fit(X_steel,T_steel,'poly1');
 
@@ -226,7 +229,10 @@ plot(X_gra,T_gra);
 %ylim([0,0]);
 plot(F_gra);
 %scatter(X,Y,'filled');
+
 % errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
+
+
 R_gra_sqr=(corr2(X_gra,T_gra)^2);
 %title('');
 %xlabel('');
@@ -246,7 +252,10 @@ plot(X_Al,T_Al);
 %ylim([0,0]);
 plot(F_Al);
 %scatter(X,Y,'filled');
+
 % errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
+
+
 R_Al_sqr=(corr2(X_Al,T_Al)^2);
 %title('');
 %xlabel('');
@@ -265,7 +274,10 @@ plot(X_glass,T_glass);
 %ylim([0,0]);
 plot(F_glass);
 %scatter(X,Y,'filled');
+
 % errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
+
+
 R_glass_sqr=(corr2(X_glass,T_glass)^2);
 %title('');
 %xlabel('');
@@ -713,6 +725,7 @@ small_info=[1,4541
 107,1729];
 
 T_big=(((big_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
+
 T_middle=(((middle_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
 T_small=(((small_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
 
