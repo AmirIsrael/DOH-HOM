@@ -185,18 +185,21 @@ plate_info=[1,4358,0.112637363,328.0656312;
 181,1541,20.38736264,75.40986281;
 182,1518,20.5,72.67584173;];
 
-T=plate_info(:,4);
-X=plate_info(:,3)+0.5;
-DI=plate_info(:,2);
-N=plate_info(:,1);
-T_steel=T(5:1:39);
-X_steel=X(5:1:39);
-T_gra=T(50:1:85);
-X_gra=X(50:1:85);
-T_Al=T(98:1:156);
-X_Al=X(98:1:156);
-T_glass=T(161:1:178);
-X_glass=X(161:1:178);
+
+T_plate=plate_info(:,4);
+X_plate=plate_info(:,3)+0.5;
+DI_plate=plate_info(:,2);
+N_plate=plate_info(:,1);
+T_steel=T_plate(5:1:39);
+X_steel=X_plate(5:1:39);
+T_gra=T_plate(50:1:85);
+X_gra=X_plate(50:1:85);
+T_Al=T_plate(98:1:156);
+X_Al=X_plate(98:1:156);
+T_glass=T_plate(161:1:178);
+X_glass=X_plate(161:1:178);
+
+
 
 F_steel = fit(X_steel,T_steel,'poly1');
 
@@ -226,7 +229,10 @@ plot(X_gra,T_gra);
 %ylim([0,0]);
 plot(F_gra);
 %scatter(X,Y,'filled');
-% errorbar(T_kiol,DI_kiol,0,0,0,0,'o');
+
+% errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
+
+
 R_gra_sqr=(corr2(X_gra,T_gra)^2);
 %title('');
 %xlabel('');
@@ -246,7 +252,10 @@ plot(X_Al,T_Al);
 %ylim([0,0]);
 plot(F_Al);
 %scatter(X,Y,'filled');
-% errorbar(T_kiol,DI_kiol,0,0,0,0,'o');
+
+% errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
+
+
 R_Al_sqr=(corr2(X_Al,T_Al)^2);
 %title('');
 %xlabel('');
@@ -265,7 +274,10 @@ plot(X_glass,T_glass);
 %ylim([0,0]);
 plot(F_glass);
 %scatter(X,Y,'filled');
-% errorbar(T_kiol,DI_kiol,0,0,0,0,'o');
+
+% errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
+
+
 R_glass_sqr=(corr2(X_glass,T_glass)^2);
 %title('');
 %xlabel('');
@@ -713,6 +725,57 @@ small_info=[1,4541
 107,1729];
 
 T_big=(((big_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
-plot(big_info(:,1),T_big);
+
+T_middle=(((middle_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
+T_small=(((small_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
+
+big_size_meter=0.4;
+middle_size_meter=0.2;
+small_size_meter=0.1;
+
+X_big=big_info(:,1)/202*big_size_meter;
+X_middle=middle_info(:,1)/123*middle_size_meter;
+X_small=small_info(:,1)/107*small_size_meter;
+
+T_inf=27;
+
+teta_big=(T_big-T_inf*ones(1,202));
+teta_middle=(T_middle-T_inf*ones(1,123));
+teta_small=(T_small-T_inf*ones(1,107));
+
+teta_big_base=T_big(1)-T_inf;
+teta_middle_base=T_middle(1)-T_inf;
+teta_small_base=T_small(1)-T_inf;
+
+k_steel=18;
+h=50;
+P=0.6;
+Ac=0.25*0.05;
+m=sqrt(h*P/(k_steel*Ac));
+
+teta_big_the=@(x) teta_big_base*(cosh(m*(big_size_meter-x))+(h/(m*k_steel))*sinh(m*(big_size_meter-x)))/(cosh(m*big_size_meter)+(h/(m*k_steel))*sinh(m*big_size_meter));
+teta_middle_the=@(x) teta_middle_base*(cosh(m*(middle_size_meter-x))+(h/(m*k_steel))*sinh(m*(middle_size_meter-x)))/(cosh(m*middle_size_meter)+(h/(m*k_steel))*sinh(m*middle_size_meter));
+teta_small_the=@(x) teta_small_base*(cosh(m*(small_size_meter-x))+(h/(m*k_steel))*sinh(m*(small_size_meter-x)))/(cosh(m*small_size_meter)+(h/(m*k_steel))*sinh(m*small_size_meter));
+
+
+
+
+figure(5);
+hold on;
+grid on;
+xlim([0,0.4]);
+ylim([0,300]);
+fplot(teta_big_the);
+plot(X_big,teta_big);
+% scatter(X,Y,'filled');
+% errorbar(X,Y,0,0,0,0,'o');
+% R_sqr=(corr2(X,Y)^2);
+%title('');
+%xlabel('');
+%ylabel('');
+%legend('');
+hold off;
+
+
 
 
