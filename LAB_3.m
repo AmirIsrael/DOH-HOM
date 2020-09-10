@@ -185,9 +185,8 @@ plate_info=[1,4358,0.112637363,328.0656312;
 181,1541,20.38736264,75.40986281;
 182,1518,20.5,72.67584173;];
 
-
 T_plate=plate_info(:,4);
-X_plate=plate_info(:,3)+0.5;
+X_plate=(plate_info(:,3)+0.5)*0.01;
 DI_plate=plate_info(:,2);
 N_plate=plate_info(:,1);
 T_steel=T_plate(5:1:39);
@@ -199,24 +198,22 @@ X_Al=X_plate(98:1:156);
 T_glass=T_plate(161:1:178);
 X_glass=X_plate(161:1:178);
 
-
-
 F_steel = fit(X_steel,T_steel,'poly1');
 
 figure(1);
 hold on;
 grid on;
-plot(X_steel,T_steel);
-%xlim([0,0]);
+% plot(X_steel,T_steel);
+xlim([0.01,0.05]);
 %ylim([0,0]);
 plot(F_steel);
-%scatter(X,Y,'filled');
+scatter(X_steel,T_steel,'.');
 % errorbar(X_steel,T_steel,{0},{0},{0},{0},'o');
 R_steel_sqr=(corr2(X_steel,T_steel)^2);
-%title('');
-%xlabel('');
-%ylabel('');
-%legend('');
+title('טמפ הפלדה ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('טמפ הפלדה [C]');
+legend('עקומה מותאמת','הערכים שנמדדו');
 hold off;
 
 F_gra = fit(X_gra,T_gra,'poly1');
@@ -224,20 +221,17 @@ F_gra = fit(X_gra,T_gra,'poly1');
 figure(2);
 hold on;
 grid on
-plot(X_gra,T_gra);
-%xlim([0,0]);
+% plot(X_gra,T_gra);
+xlim([0.06,0.101]);
 %ylim([0,0]);
 plot(F_gra);
-%scatter(X,Y,'filled');
-
+scatter(X_gra,T_gra,'.');
 % errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
-
-
 R_gra_sqr=(corr2(X_gra,T_gra)^2);
-%title('');
-%xlabel('');
-%ylabel('');
-%legend('');
+title('טמפ הגרניט ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('טמפ הגרניט [C]');
+legend('עקומה מותאמת','הערכים שנמדדו');
 hold off;
 
 
@@ -246,21 +240,18 @@ F_Al = fit(X_Al,T_Al,'poly1');
 figure(3);
 hold on;
 grid on
-plot(X_Al,T_Al);
+% plot(X_Al,T_Al);
 
-%xlim([0,0]);
+xlim([0.11,0.181]);
 %ylim([0,0]);
 plot(F_Al);
-%scatter(X,Y,'filled');
-
+scatter(X_Al,T_Al,'.');
 % errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
-
-
 R_Al_sqr=(corr2(X_Al,T_Al)^2);
-%title('');
-%xlabel('');
-%ylabel('');
-%legend('');
+title('טמפ האלומיניום ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('טמפ האלומיניום [C]');
+legend('עקומה מותאמת','הערכים שנמדדו');
 hold off;
 
 
@@ -269,20 +260,17 @@ F_glass = fit(X_glass,T_glass,'poly1');
 figure(4);
 grid on
 hold on;
-plot(X_glass,T_glass);
-%xlim([0,0]);
+% plot(X_glass,T_glass);
+xlim([0.185,0.206]);
 %ylim([0,0]);
 plot(F_glass);
-%scatter(X,Y,'filled');
-
+scatter(X_glass,T_glass,'.');
 % errorbar(T_k_steeliol,DI_k_steeliol,0,0,0,0,'o');
-
-
 R_glass_sqr=(corr2(X_glass,T_glass)^2);
-%title('');
-%xlabel('');
-%ylabel('');
-%legend('');
+title('טמפ הזכוכית ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('טמפ הזכוכית [C]');
+legend('עקומה מותאמת','הערכים שנמדדו');
 hold off;
 
 
@@ -725,7 +713,6 @@ small_info=[1,4541
 107,1729];
 
 T_big=(((big_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
-
 T_middle=(((middle_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
 T_small=(((small_info(:,2)-5.5846)/0.0225).^(1/1.9027))-273.15;
 
@@ -806,13 +793,13 @@ xlim([0,0.4]);
 ylim([0,300]);
 fplot(teta_big_the);
 % plot(X_big,teta_big);
-scatter(X_big,teta_big,'filled');
+scatter(X_big,teta_big,'.');
 % errorbar(X,Y,0,0,0,0,'o');
 % R_sqr=(corr2(X,Y)^2);
-%title('');
-%xlabel('');
-%ylabel('');
-%legend('');
+title('ההפרש בין הטמפ של הצלע הגדולה לטמפ החדר ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('הפרש הטמפרטורות');
+legend('עקומה תיאורתית','הערכים שנמדדו');
 hold off;
 
 figure(6);
@@ -822,29 +809,47 @@ xlim([0,0.2]);
 ylim([0,300]);
 fplot(teta_middle_the);
 % plot(X_middle,teta_middle);
-scatter(X_middle,teta_middle,'filled');
+scatter(X_middle,teta_middle,'.');
 % errorbar(X,Y,0,0,0,0,'o');
 % R_sqr=(corr2(X,Y)^2);
-%title('');
-%xlabel('');
-%ylabel('');
-%legend('');
+title('ההפרש בין הטמפ של הצלע הבינונית לטמפ החדר ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('הפרש הטמפרטורות');
+legend('עקומה תיאורתית','הערכים שנמדדו');
 hold off;
 
 figure(7);
 hold on;
 grid on;
-xlim([0,0.1]);
+xlim([0,0.09]);
 ylim([0,300]);
 fplot(teta_small_the);
 % plot(X_small,teta_small);
-scatter(X_small,teta_small,'filled');
+scatter(X_small,teta_small,'.');
 % errorbar(X,Y,0,0,0,0,'o');
 % R_sqr=(corr2(X,Y)^2);
-%title('');
-%xlabel('');
-%ylabel('');
-%legend('');
+title('ההפרש בין הטמפ של הצלע הקטנה לטמפ החדר ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('הפרש הטמפרטורות');
+legend('עקומה תיאורתית','הערכים שנמדדו');
+hold off;
+
+
+figure(8);
+hold on;
+grid on;
+% xlim([0,0.1]);
+% ylim([0,300]);
+% fplot(teta_small_the);
+% plot(X_plate,T_plate);
+scatter(X_plate,T_plate,'.');
+% errorbar(X,Y,0,0,0,0,'o');
+% R_sqr=(corr2(X,Y)^2);
+title('טמפ החומרים ביחס לגובה');
+xlabel('גובה [m]');
+ylabel('טמפ החומרים [C]');
+legend('הערכים שנמדדו');
+
 hold off;
 
 
